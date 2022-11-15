@@ -1,2 +1,1 @@
-# BactGenome
-Bacterial genome assembly and prediction -snakemake
+# Bacterial genome assembly and prediction - snakemake
