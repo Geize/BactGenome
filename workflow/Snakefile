@@ -1,0 +1,142 @@
+# Aarhus Universtiy  - 🧌 🪓🛡️ 🇳🇴
+#@uthor:Geizecler Tomazetto, Ph.D.
+#email:geizetomazetto@gmail.com
+
+
+######## Bacterial genome assembly and prediction ########
+# Snakemake workflow
+    # Quality check - fastqc
+    # Trimming - trimmomatic
+    # Assembly - SPAdes (best approach for bacterial isolates)
+    # Assembly assesement - Quast - without a reference genome.
+    # Checking chimera - GUNC - Go to the rule GUNC and indicate where GUNC_database is located.
+    # Prediction and Annotation - Prokka
+    # Enjoy 😊  
+##########################################################
+
+import os
+import glob
+
+#Pay attention on the file names.
+
+Samples,ID= glob_wildcards("reads/{sample}_{id}.fastq.gz")
+
+rule all:
+    input:
+    #Fastqc
+         expand("Fastqc_{sample}/{sample}_{id}_fastqc.{extension}",sample=Samples, id=ID, extension=['html', 'zip']),
+    #Trimmed
+         expand("trimmedReads/{sample}_{id}_trimmed.fastq.gz", sample=Samples, id=ID),
+         expand("trimmedReads/Unpaired_{sample}_{id}.fastq.gz",sample=Samples, id=ID),
+    #Assembly
+         expand("SPAdes/{sample}/scaffolds.fasta", sample=Samples),
+    #Quast
+         expand("Quast_{sample}/", sample=Samples),
+    #GUNC_chimerism
+         expand("GUNC_{sample}/", sample=Samples),
+    #Prokka
+         expand("Prokka_{sample}/", sample=Samples)
+
+
+
+rule quality_fastqc:
+    input:
+         rawread1=expand("reads/{sample}_1.fastq.gz",sample=Samples),
+         rawread2=expand("reads/{sample}_2.fastq.gz",sample=Samples)
+    output:
+         html="Fastqc_{sample}/{sample}_{id}_fastqc.html",
+         zip= "Fastqc_{sample}/{sample}_{id}_fastqc.zip"
+    threads:
+         10
+    params:
+         path="Fastqc/"
+    shell:
+         """
+         fastqc {input.rawread1} {input.rawread2} --threads {threads} -o {params.path}
+         """
+
+
+rule trimmomatic:
+    input:
+         read1="reads/{sample}_1.fastq.gz",
+         read2="reads/{sample}_2.fastq.gz"
+    output:
+         forwardPaired="trimmedReads/{sample}_1_trimmed.fastq.gz",
+         reversePaired="trimmedReads/{sample}_2_trimmed.fastq.gz",
+         Unpaired1="trimmedReads/Unpaired_{sample}_1.fastq.gz",
+         Unpaired2="trimmedReads/Unpaired_{sample}_2.fastq.gz"
+    threads:
+         16
+    shell:
+         """trimmomatic PE  -threads {threads} {input.read1} {input.read2}  \
+         {output.forwardPaired} {output.Unpaired1} {output.reversePaired} {output.Unpaired2} \
+         ILLUMINACLIP:All_TruSeqPE.fa:2:40:15 SLIDINGWINDOW:4:20 MINLEN:25"""
+
+
+rule assembly_spades:
+    input:
+         trimmed1="trimmedReads/{sample}_1_trimmed.fastq.gz",
+         trimmed2="trimmedReads/{sample}_2_trimmed.fastq.gz"
+
+    output:
+         "SPAdes/{sample}/scaffolds.fasta"
+
+    params:
+        out="SPAdes/{sample}/"
+
+    threads:
+         16
+    shell:
+         """
+         spades.py --threads {threads} -1 {input.trimmed1} -2 {input.trimmed2} -o {params.out} -k 99,127
+         """
+
+rule assesement_quast:
+    input:
+         ContigSpades="SPAdes/{sample}/scaffolds.fasta"
+    output:
+         QuastDir=directory("Quast_{sample}/")
+
+    threads:
+         10
+    shell:
+         """
+         quast -o {output.QuastDir}  {input.ContigSpades} --threads {threads}
+         """
+
+
+rule ProkkaAnnot:
+    input:
+         ContigSpades="assembly/{sample}/scaffolds.fasta"
+
+    output:
+         ProkkaDir=directory("Prokka_{sample}/")
+
+    threads:
+         16
+    params:
+         SampleName="{sample}"
+    shell:
+         """
+         prokka  --cpus {threads} --outdir {output.ProkkaDir} \
+         --locustag {params.SampleName} \
+         --proteins {params.SampleName}.faa \
+         --evalue 0.001 {input.ContigSpades}
+         """
+
+
+rule GUNC_chimerism:
+    input:
+         ContigSpades="SPAdes/{sample}/scaffolds.fasta"
+    output:
+        GUNC=directory("GUNC_{sample}/")
+    threads:
+         10
+    params:
+         database="/home/geize/killer_slug/Snake/GUNC_database/gunc_db_progenomes2.1.dmnd",
+         out="GUNC_{sample}/"
+    shell:
+         """
+         mkdir -p {output} &&
+         gunc run -i {input} -r {params.database} --out_dir {params.out} --threads {threads}
+         """

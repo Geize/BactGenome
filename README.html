@@ -358,9 +358,58 @@ pre code {
 </div>
 
 
-<div id="bacterial-genome-assembly-and-prediction---snakemake" class="section level1">
-<h1>Bacterial genome assembly and prediction - snakemake</h1>
-<p>Hi Folks!</p>
+<div id="bacterial-genome-assembly-and-prediction---snakemake" class="section level4">
+<h4>Bacterial genome assembly and prediction - snakemake</h4>
+<p>Hi Folks! 😀</p>
+<p>First thing first.Our mantra 🕉️ : This repository is not a tutorial.
+It is just for reprocuding my work. However, you are more than welcome
+to use this workflow. And if you find any error, please, you’ll welcome
+as well to complain (but not too much 😊). I’ll be glad to fix it.</p>
+<p><strong>The workflow will do:</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Quality control of llumina MiSeq reads (paired-end reads, PE) -
+<a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a>.</p></li>
+<li><p>Trimmed the raw reads - Trimmomatic.</p></li>
+<li><p>Assembly the quality-filtered paired-end reads - De novo assembly
+- &lt;a href=“<a href="https://github.com/ablab/spades" class="uri">https://github.com/ablab/spades</a>”&gt;SPAdes</a>.
+🔥</p></li>
+<li><p>Quality assessment for evaluating genome assembled -
+<a href="https://quast.sourceforge.net">QUAST</a>. 🔥</p></li>
+<li><p>Detection chimera or contamination -
+<a href="https://grp-bork.embl-community.io/gunc/">GUNC</a>.🔥</p></li>
+<li><p>Prediction and annotation -
+<a href="https://github.com/tseemann/prokka">Prokka</a>.</p></li>
+<li><p>Folders have the same name of each tool used. (pretty
+🤓)</p></li>
+</ol>
+<p><strong>Important points:</strong>🔥</p>
+<p>Create a folder named <code>reads/</code> and transfer your
+“fastq.gz” to this folder. Then, rename your “fastq.gz” files to
+<code>{dadada}.1.fastq.gz</code> and
+<code>{dadada}.2.fastq.gz</code>.</p>
+<p>From my repository: download to your area the file with all PE
+sequence adapters in Adapter folder for trimming step, and
+enomeAnalysis.yaml file to install/recreate the the same environment
+that I use to process my data.</p>
+<p><code>$ conda env create -n snake -f GenomeAnalysis.yaml</code></p>
+<p><code>$ conda activate snake</code></p>
+<p>Now, everything is ready to run the workflow.</p>
+<p><strong>Additional information:</strong>🔥</p>
+<p>SPAdes is still the best assembler for bacterial genomes (considering
+that you are using PE). That’s why you won’t find any another assembler
+as a second option. However, if you still want try with another
+assembler, it is very easy to add a new rule or replace the current one
+in the workflow (but, you’ll be in charge to do it 😄).</p>
+<p>QUAST - Gives an idea about how good your assembly is. But, it was
+not set up for comparing genome assemblies. I guess you can easily have
+a better comparison going directly to the NCBI genome.</p>
+<p>GUNC - This is a new tools for detecting and quantifying chimerism. I
+guess it is better than CheckM.</p>
+<p>The next two repository is dedicated to identify enzymes and
+reconstruct metabolic pathways, and phylogenomic analysis (be patient
+🤓, coming soon 🏃‍♀️,).</p>
+<p><strong>All the best for us.</strong></p>
+<p>🤓</p>
 </div>
 
 
