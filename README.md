@@ -1,5 +1,6 @@
 ## Bacterial genome assembly and prediction - snakemake
-________________________________________________________
+
+------------------------------------------------------------------------
 
 Hi Folks! 😀
 
@@ -11,15 +12,15 @@ First thing first. Our mantra 🕉️ : This repository is not a tutorial. It is
 
 2.  Trimmed the raw reads - <a href="http://www.usadellab.org/cms/?page=trimmomatic"> Trimmomatic</a>.
 
-3.  Assembly the quality-filtered paired-end reads - De novo assembly - <a href="https://github.com/ablab/spades">SPAdes</a>. 
+3.  Assembly the quality-filtered paired-end reads - De novo assembly - <a href="https://github.com/ablab/spades">SPAdes</a>.
 
-4.  Quality assessment for evaluating genome assembled - <a href="https://quast.sourceforge.net">QUAST</a>. 
+4.  Quality assessment for evaluating genome assembled - <a href="https://quast.sourceforge.net">QUAST</a>.
 
 5.  Detection chimera or contamination - <a href="https://grp-bork.embl-community.io/gunc/">GUNC</a>.
 
 6.  Prediction and annotation - <a href="https://github.com/tseemann/prokka">Prokka</a>.
 
-7.  Folders have the same name of each tool used. 
+7.  Folders have the same name of each tool used.
 
 **Important points:**
 
