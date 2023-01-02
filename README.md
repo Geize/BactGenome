@@ -3,7 +3,7 @@ ________________________________________________________
 
 Hi Folks! 😀
 
-First thing first. Our mantra 🕉️ : This repository is not a tutorial. It is just for reprocuding my work. However, you are more than welcome to use this workflow. And if you find any error, please, you'll welcome as well to complain (but not too much 😊). I'll be glad to fix it.
+First thing first. Our mantra 🕉️ : This repository is not a tutorial. It is just for reproducing my work. However, you are more than welcome to use this workflow. And if you find any error, please, you'll welcome as well to complain (but not too much 😊). I'll be glad to fix it.
 
 **The workflow will do:**
 
@@ -41,6 +41,5 @@ QUAST - Gives an idea about how good your assembly is. But, QUAST was not set up
 
 GUNC - This is a new tools for detecting and quantifying chimerism. In my opinion, it is better than CheckM.
 
-The next two repository is dedicated to identify enzymes and reconstruct metabolic pathways, and phylogenomic analysis (be patient, coming soon 🏃‍♀️).
 
 **All the best for us.**
