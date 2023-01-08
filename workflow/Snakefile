@@ -118,7 +118,7 @@ rule ProkkaAnnot:
          SampleName="{sample}"
     shell:
          """
-         prokka  --cpus {threads} --outdir {output.ProkkaDir} \
+         prokka  --cpus {threads} --outdir {output.ProkkaDir} --prefix {params.SampleName} \
          --locustag {params.SampleName} \
          --proteins {params.SampleName}.faa \
          --evalue 0.001 {input.ContigSpades}
