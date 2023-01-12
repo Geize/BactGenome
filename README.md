@@ -24,7 +24,7 @@ First thing first. Our mantra 🕉️ : This repository is not a tutorial. It is
 
 **Important points:**
 
-Create a folder named `reads/` and transfer your "fastq.gz" to this folder. Then, rename your "fastq.gz" files to `{dadada}.1.fastq.gz` and `{dadada}.2.fastq.gz`.
+Create a folder named `reads/` and transfer your "fastq.gz" to this folder. Then, rename your "fastq.gz" files to `{dadada}_1.fastq.gz` and `{dadada}_2.fastq.gz`.
 
 From my repository: download to your area the file with all PE sequence adapters in Adapter folder for trimming step, and GenomeAnalysis.yaml file in env folder to recreate the the same environment that I use to process my data.
 
