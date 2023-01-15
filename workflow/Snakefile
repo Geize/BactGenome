@@ -24,7 +24,7 @@ Samples,ID= glob_wildcards("reads/{sample}_{id}.fastq.gz")
 rule all:
     input:
     #Fastqc
-         expand("Fastqc_{sample}/{sample}_{id}_fastqc.{extension}",sample=Samples, id=ID, extension=['html', 'zip']),
+         expand("Fastqc/{sample}_{id}_fastqc.{extension}",sample=Samples, id=ID, extension=['html', 'zip']),
     #Trimmed
          expand("trimmedReads/{sample}_{id}_trimmed.fastq.gz", sample=Samples, id=ID),
          expand("trimmedReads/Unpaired_{sample}_{id}.fastq.gz",sample=Samples, id=ID),
@@ -41,18 +41,18 @@ rule all:
 
 rule quality_fastqc:
     input:
-         rawread1=expand("reads/{sample}_1.fastq.gz",sample=Samples),
-         rawread2=expand("reads/{sample}_2.fastq.gz",sample=Samples)
+         "reads/{sample}_{id}.fastq.gz"
+         #rawread2=expand("reads/{sample}_2.fastq.gz",sample=Samples)
     output:
-         html="Fastqc_{sample}/{sample}_{id}_fastqc.html",
-         zip= "Fastqc_{sample}/{sample}_{id}_fastqc.zip"
+         html="Fastqc/{sample}_{id}_fastqc.html",
+         zip= "Fastqc/{sample}_{id}_fastqc.zip"
     threads:
-         10
+         12
     params:
-         path="Fastqc/"
+         path='Fastqc/'
     shell:
          """
-         fastqc {input.rawread1} {input.rawread2} --threads {threads} -o {params.path}
+         fastqc {input} -o 'Fastqc/'
          """
 
 
@@ -107,7 +107,7 @@ rule assesement_quast:
 
 rule ProkkaAnnot:
     input:
-         ContigSpades="assembly/{sample}/scaffolds.fasta"
+         ContigSpades="SPAdes/{sample}/scaffolds.fasta"
 
     output:
          ProkkaDir=directory("Prokka_{sample}/")
@@ -133,7 +133,7 @@ rule GUNC_chimerism:
     threads:
          10
     params:
-         database="/home/geize/killer_slug/Snake/GUNC_database/gunc_db_progenomes2.1.dmnd",
+         database="/home/geize/killer_slug/Plastic/GUNC_database/gunc_db_progenomes2.1.dmnd",
          out="GUNC_{sample}/"
     shell:
          """

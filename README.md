@@ -36,11 +36,11 @@ Now, everything is ready to run the workflow.
 
 **Additional information:**🔥
 
-SPAdes is still the best assembler for bacterial genome assembly (considering that you are using PE). That's why you won't find any another assembler as a second option. However, if you still want try with another assembler, it is very easy to add a new rule or replace the current one in the workflow (but, you'll be in charge to do it 😄).
+SPAdes is still the best assembler for bacterial genome assembly (considering that you are using PE). That's why you won't find another assembler as a second option. However, if you still want to try another assembler, it is very easy to add a new rule or replace the current one in the workflow (but, you'll be in charge to do it 😄).
 
 QUAST - Give an idea about how good your assembly is. But, QUAST was not set up for comparing genome assemblies. I guess you can easily have a better comparison going directly to the NCBI genome.
 
-GUNC - This is a new tool for detecting and quantifying chimerism. In my opinion, it is better than CheckM.
+GUNC - This is a new tool for detecting and quantifying chimerism. In my opinion, it is better than CheckM. Don't forget to specify the GUNC database path installed on your computer/server.
 
 
 **All the best for us.**
